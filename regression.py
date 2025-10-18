@@ -57,42 +57,11 @@ def load_california_houses_data():
         print(f"X shape: {X.shape}, y shape: {y.shape}") 
         return X, y, feature_columns
     except Exception as e:
-        print(f"Error loading your dataset: {e}")
-        print("Using synthetic data as fallback...")
-        return create_synthetic_data()
+        print(f" ERROR loading dataset: {e}")
+        print(" Please ensure the file exists at: data/california_houses/California_Houses.csv")
+        print(" Check that the file path is correct and the file is accessible.")
+        exit(1) 
 
-def create_synthetic_data():
-    """Create synthetic data if real data cannot be loaded"""
-    print("Creating synthetic California housing data...")
-    np.random.seed(42)
-    n_samples = 20000
-    X = np.column_stack([
-        np.random.normal(3.0, 1.0, n_samples),  # Median_Income
-        np.random.normal(30, 15, n_samples),     # Median_Age
-        np.random.normal(1500, 800, n_samples),  # Tot_Rooms
-        np.random.normal(300, 150, n_samples),   # Tot_Bedrooms
-        np.random.normal(1500, 800, n_samples),  # Population
-        np.random.normal(500, 250, n_samples),   # Households
-        np.random.uniform(32, 42, n_samples),    # Latitude
-        np.random.uniform(-124, -114, n_samples), # Longitude
-        np.random.normal(50, 25, n_samples),     # Distance_to_coast
-        np.random.normal(100, 50, n_samples),    # Distance_to_LA
-        np.random.normal(150, 75, n_samples),    # Distance_to_SanDiego
-        np.random.normal(80, 40, n_samples),     # Distance_to_SanJose
-        np.random.normal(60, 30, n_samples)      # Distance_to_SanFrancisco
-    ])
-  
-    y = (X[:, 0] * 50000 +  
-         X[:, 1] * 1000 +   
-         X[:, 2] * 10 +     
-         np.random.normal(200000, 50000, n_samples))  
-    feature_names = [
-        'Median_Income', 'Median_Age', 'Tot_Rooms', 'Tot_Bedrooms', 'Population',
-        'Households', 'Latitude', 'Longitude', 'Distance_to_coast', 
-        'Distance_to_LA', 'Distance_to_SanDiego', 'Distance_to_SanJose', 
-        'Distance_to_SanFrancisco'
-    ]
-    return X, y, feature_names
 
 def split_regression_data(X, y, test_size=0.3, val_size=0.15):
     # First split: separate test data (15%)
